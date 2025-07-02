@@ -1,7 +1,7 @@
 # programa_CRM_/main.py
 
 from usuarios import Usuario, BuscadorUsuario, ListadoUsuarios
-from facturas import Factura
+from facturas import Factura, FacturasUsuario
 
 
 def mostrar_menu():
@@ -106,9 +106,7 @@ if __name__ == "__main__":
 
             listado.cerrar()
 
-                elif opcion == "5":
-            from facturas import FacturasUsuario
-
+        elif opcion == "5":
             print("\n=== FACTURAS POR USUARIO ===")
             email = input("Ingrese email del usuario: ").strip()
             try:
