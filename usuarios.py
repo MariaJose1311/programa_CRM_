@@ -3,6 +3,8 @@
 import re
 from conexion import ConexionMySQL
 
+# Clase Usuario para gestionar el registro y validación de usuarios en el CRM
+
 class Usuario:
     def __init__(self, nombre, apellidos, email, telefono=None, direccion=None):
         self.validar_campos(nombre, apellidos, email)
@@ -48,6 +50,7 @@ class Usuario:
         conexion.cerrar()
         print(f"Usuario registrado exitosamente con ID: {self.id}")
 
+# Buscar usuarios por email o nombre
 
 class BuscadorUsuario:
     def __init__(self):
@@ -60,6 +63,20 @@ class BuscadorUsuario:
 
     def buscar_por_nombre(self, nombre):
         self.cursor.execute("SELECT * FROM usuarios WHERE nombre LIKE %s", (f"%{nombre}%",))
+        return self.cursor.fetchall()
+
+    def cerrar(self):
+        self.db.cerrar()
+
+# Obtener listado de usuarios
+
+class ListadoUsuarios:
+    def __init__(self):
+        self.db = ConexionMySQL()
+        self.cursor = self.db.obtener_cursor()
+
+    def obtener_todos(self):
+        self.cursor.execute("SELECT id, nombre, apellidos, email, telefono, fecha_registro FROM usuarios")
         return self.cursor.fetchall()
 
     def cerrar(self):
