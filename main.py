@@ -106,6 +106,40 @@ if __name__ == "__main__":
 
             listado.cerrar()
 
+                elif opcion == "5":
+            from facturas import FacturasUsuario
+
+            print("\n=== FACTURAS POR USUARIO ===")
+            email = input("Ingrese email del usuario: ").strip()
+            try:
+                f = FacturasUsuario(email)
+                facturas = f.obtener_facturas()
+
+                print(f"\n--- FACTURAS DE {f.usuario[1]} {f.usuario[2]} ---")
+                if facturas:
+                    total = 0
+                    pendiente = 0
+                    for idx, fac in enumerate(facturas, start=1):
+                        print(f"\nFactura #{idx}:")
+                        print(f"Número: {fac[0]}")
+                        print(f"Fecha: {fac[1].strftime('%d/%m/%Y %H:%M')}")
+                        print(f"Descripción: {fac[2]}")
+                        print(f"Monto: ${fac[3]:.2f}")
+                        print(f"Estado: {fac[4]}")
+                        total += fac[3]
+                        if fac[4] == "Pendiente":
+                            pendiente += fac[3]
+
+                    print(f"\nTotal de facturas: {len(facturas)}")
+                    print(f"Monto total facturado: ${total:.2f}")
+                    print(f"Monto pendiente: ${pendiente:.2f}")
+                else:
+                    print("Este usuario no tiene facturas registradas.")
+                f.cerrar()
+            except ValueError as e:
+                print(f"Error: {e}")
+
+
         elif opcion == "7":
             print("Saliendo del sistema. ¡Hasta luego!")
             break
