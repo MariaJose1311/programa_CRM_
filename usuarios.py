@@ -47,3 +47,20 @@ class Usuario:
         conexion.confirmar()
         conexion.cerrar()
         print(f"Usuario registrado exitosamente con ID: {self.id}")
+
+
+class BuscadorUsuario:
+    def __init__(self):
+        self.db = ConexionMySQL()
+        self.cursor = self.db.obtener_cursor()
+
+    def buscar_por_email(self, email):
+        self.cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
+        return self.cursor.fetchone()
+
+    def buscar_por_nombre(self, nombre):
+        self.cursor.execute("SELECT * FROM usuarios WHERE nombre LIKE %s", (f"%{nombre}%",))
+        return self.cursor.fetchall()
+
+    def cerrar(self):
+        self.db.cerrar()
