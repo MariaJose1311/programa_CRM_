@@ -4,6 +4,8 @@ from usuarios import Usuario
 from faker import Faker
 import random
 
+# Generador de usuarios de prueba utilizando Faker
+# Este script crea una cantidad especificada de usuarios con datos aleatorios
 class GeneradorUsuarios:
     def __init__(self, cantidad=5):
         self.cantidad = cantidad
