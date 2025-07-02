@@ -1,7 +1,8 @@
 # programa_CRM_/main.py
 
-from usuarios import Usuario
+from usuarios import Usuario, BuscadorUsuario
 from facturas import Factura
+
 
 def mostrar_menu():
     print("\n=== SISTEMA DE CRM ===")
@@ -29,6 +30,46 @@ if __name__ == "__main__":
                 Usuario(nombre, apellidos, email, telefono, direccion)
             except ValueError as e:
                 print(f"Error: {e}")
+        
+        elif opcion == "2":
+            print("\n=== BUSCAR USUARIO ===")
+            print("1. Buscar por email")
+            print("2. Buscar por nombre")
+            metodo = input("Seleccione método de búsqueda: ").strip()
+
+            buscador = BuscadorUsuario()
+            if metodo == "1":
+                email = input("Ingrese email: ").strip()
+                usuario = buscador.buscar_por_email(email)
+                if usuario:
+                    print("\n--- USUARIO ENCONTRADO ---")
+                    print(f"ID: {usuario[0]}")
+                    print(f"Nombre: {usuario[1]} {usuario[2]}")
+                    print(f"Email: {usuario[3]}")
+                    print(f"Teléfono: {usuario[4] or 'No especificado'}")
+                    print(f"Dirección: {usuario[5] or 'No especificado'}")
+                    print(f"Fecha de registro: {usuario[6].strftime('%d/%m/%Y')}")
+                else:
+                    print("No se encontró ningún usuario con ese email.")
+
+            elif metodo == "2":
+                nombre = input("Ingrese nombre: ").strip()
+                resultados = buscador.buscar_por_nombre(nombre)
+                if resultados:
+                    print(f"\n--- {len(resultados)} resultado(s) encontrados ---")
+                    for u in resultados:
+                        print(f"\nID: {u[0]}")
+                        print(f"Nombre: {u[1]} {u[2]}")
+                        print(f"Email: {u[3]}")
+                        print(f"Teléfono: {u[4] or 'No especificado'}")
+                        print(f"Dirección: {u[5] or 'No especificado'}")
+                        print(f"Fecha de registro: {u[6].strftime('%d/%m/%Y')}")
+                else:
+                    print("No se encontraron usuarios con ese nombre.")
+            else:
+                print("Método de búsqueda no válido.")
+
+            buscador.cerrar()
 
         elif opcion == "3":
             print("\n=== CREAR FACTURA ===")
