@@ -84,3 +84,37 @@ class FacturasUsuario:
 
     def cerrar(self):
         self.db.cerrar()
+
+# Resumen financiero de facturas por usuario y general
+class ResumenFinanciero:
+    def __init__(self):
+        self.db = ConexionMySQL()
+        self.cursor = self.db.obtener_cursor()
+
+    def obtener_resumen_por_usuario(self):
+        self.cursor.execute("""
+            SELECT u.nombre, u.apellidos, u.email,
+                COUNT(f.numero) AS total_facturas,
+                COALESCE(SUM(f.monto), 0) AS monto_total,
+                COALESCE(SUM(CASE WHEN f.estado = 'Pagada' THEN f.monto ELSE 0 END), 0) AS pagadas,
+                COALESCE(SUM(CASE WHEN f.estado = 'Pendiente' THEN f.monto ELSE 0 END), 0) AS pendientes
+            FROM usuarios u
+            LEFT JOIN facturas f ON u.id = f.usuario_id
+            GROUP BY u.id
+        """)
+        return self.cursor.fetchall()
+
+    def obtener_resumen_general(self):
+        self.cursor.execute("""
+            SELECT 
+                COUNT(DISTINCT usuario_id),
+                COUNT(numero),
+                COALESCE(SUM(monto), 0),
+                COALESCE(SUM(CASE WHEN estado = 'Pagada' THEN monto ELSE 0 END), 0),
+                COALESCE(SUM(CASE WHEN estado = 'Pendiente' THEN monto ELSE 0 END), 0)
+            FROM facturas
+        """)
+        return self.cursor.fetchone()
+
+    def cerrar(self):
+        self.db.cerrar()
