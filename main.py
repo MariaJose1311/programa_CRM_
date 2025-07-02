@@ -1,7 +1,7 @@
 # programa_CRM_/main.py
 
 from usuarios import Usuario, BuscadorUsuario, ListadoUsuarios
-from facturas import Factura, FacturasUsuario
+from facturas import Factura, FacturasUsuario, ResumenFinanciero
 
 
 def mostrar_menu():
@@ -136,6 +136,26 @@ if __name__ == "__main__":
                 f.cerrar()
             except ValueError as e:
                 print(f"Error: {e}")
+
+        elif opcion == "6":
+            print("\n=== RESUMEN FINANCIERO ===")
+            resumen = ResumenFinanciero()
+            usuarios = resumen.obtener_resumen_por_usuario()
+            for u in usuarios:
+                print(f"\nUsuario: {u[0]} {u[1]} ({u[2]})")
+                print(f"- Total facturas: {u[3]}")
+                print(f"- Monto total: ${u[4]:.2f}")
+                print(f"- Facturas pagadas: ${u[5]:.2f}")
+                print(f"- Facturas pendientes: ${u[6]:.2f}")
+
+            total = resumen.obtener_resumen_general()
+            print("\n--- RESUMEN GENERAL ---")
+            print(f"Total usuarios: {total[0]}")
+            print(f"Total facturas emitidas: {total[1]}")
+            print(f"Ingresos totales: ${total[2]:.2f}")
+            print(f"Ingresos recibidos: ${total[3]:.2f}")
+            print(f"Ingresos pendientes: ${total[4]:.2f}")
+            resumen.cerrar()
 
 
         elif opcion == "7":
