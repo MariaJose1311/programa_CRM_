@@ -56,3 +56,31 @@ class Factura:
         conexion.confirmar()
         conexion.cerrar()
         print(f"Factura creada exitosamente con número: {self.numero}")
+
+# Obtener facturas de un usuario específico
+
+class FacturasUsuario:
+    def __init__(self, email):
+        self.email = email
+        self.db = ConexionMySQL()
+        self.cursor = self.db.obtener_cursor()
+        self.usuario = self.obtener_usuario()
+
+    def obtener_usuario(self):
+        self.cursor.execute("SELECT id, nombre, apellidos FROM usuarios WHERE email = %s", (self.email,))
+        usuario = self.cursor.fetchone()
+        if not usuario:
+            raise ValueError("Usuario no encontrado.")
+        return usuario
+
+    def obtener_facturas(self):
+        self.cursor.execute("""
+            SELECT numero, fecha_emision, descripcion, monto, estado
+            FROM facturas
+            WHERE usuario_id = %s
+            ORDER BY fecha_emision
+        """, (self.usuario[0],))
+        return self.cursor.fetchall()
+
+    def cerrar(self):
+        self.db.cerrar()
