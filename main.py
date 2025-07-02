@@ -1,6 +1,6 @@
 # programa_CRM_/main.py
 
-from usuarios import Usuario, BuscadorUsuario
+from usuarios import Usuario, BuscadorUsuario, ListadoUsuarios
 from facturas import Factura
 
 
@@ -87,6 +87,24 @@ if __name__ == "__main__":
                 Factura(email, descripcion, monto, estado)
             except (ValueError, IndexError) as e:
                 print(f"Error: {e}")
+
+        elif opcion == "4":
+            print("\n=== LISTA DE USUARIOS ===")
+            listado = ListadoUsuarios()
+            usuarios = listado.obtener_todos()
+            if usuarios:
+                for idx, u in enumerate(usuarios, start=1):
+                    print(f"\nUsuario #{idx}:")
+                    print(f"ID: {u[0]}")
+                    print(f"Nombre: {u[1]} {u[2]}")
+                    print(f"Email: {u[3]}")
+                    print(f"Teléfono: {u[4] or 'No especificado'}")
+                    print(f"Fecha de registro: {u[5].strftime('%d/%m/%Y')}")
+                print(f"\nTotal de usuarios registrados: {len(usuarios)}")
+            else:
+                print("No hay usuarios registrados.")
+
+            listado.cerrar()
 
         elif opcion == "7":
             print("Saliendo del sistema. ¡Hasta luego!")
