@@ -1,23 +1,18 @@
 # conexion.py
 import mysql.connector
 from mysql.connector import Error
+from dotenv import load_dotenv
+import os
 
 class ConexionMySQL:
-    def __init__(
-        self,
-        host='127.0.0.1',
-        user='root',
-        password='Majo.bnr13',
-        database='crm',
-        port=3306
-    ):
+    def __init__(self):
+        load_dotenv()  # Cargar .env
         try:
             self.conexion = mysql.connector.connect(
-                host=host,
-                user=user,
-                password=password,
-                database=database,
-                port=port
+                host=os.getenv('DB_HOST'),
+                user=os.getenv('DB_USER'),
+                password=os.getenv('DB_PASSWORD'),
+                database=os.getenv('DB_NAME')
             )
             if self.conexion.is_connected():
                 print("Conexión exitosa a la base de datos.")
