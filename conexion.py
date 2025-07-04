@@ -28,3 +28,6 @@ class ConexionMySQL:
     def cerrar(self):
         if self.conexion.is_connected():
             self.conexion.close()
+
+if __name__ == "__main__":
+    ConexionMySQL()
