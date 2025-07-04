@@ -96,6 +96,10 @@ python generador_usuarios.py
 5. Ejecuta crear_db.py para crear las tablas.
 
 ## Ejecutar Pruebas
+Este proyecto incluye pruebas funcionales básicas para verificar el flujo completo (registro de usuario + factura).
+
+1. Asegúrate de tener una base de datos llamada `crm` creada.
+2. Ejecuta el siguiente comando desde la raíz del proyecto:
 
 ```bash
 python -m unittest tests/test_fechas.py
