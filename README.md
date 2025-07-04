@@ -6,6 +6,7 @@ Un sistema CRM básico por consola en Python que permite la gestión de usuarios
 
 ```bash
 pip install -r requirements.txt
+```
 
 ## Características
 
